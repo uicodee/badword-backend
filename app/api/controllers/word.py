@@ -1,7 +1,6 @@
 from math import ceil
 
-from fastapi import APIRouter, Query, Depends, Path
-
+from fastapi import APIRouter, Query, Depends, Path, HTTPException, status
 from app import dto
 from app.api import schems
 from app.api.dependencies import dao_provider, get_user
@@ -60,6 +59,11 @@ async def get_word(
 async def add_word(
     word: schems.Word, dao: HolderDao = Depends(dao_provider)
 ) -> dto.Word:
+    if await dao.word.get_word(word=word.word) is not None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Word already exists",
+        )
     return await dao.word.add_word(word=word.word)
 
 
