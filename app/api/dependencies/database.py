@@ -3,8 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from app.infrastructure.database.dao import HolderDao
 
 
-def dao_provider():
-    ...
+def dao_provider(): ...
 
 
 class DbProvider:

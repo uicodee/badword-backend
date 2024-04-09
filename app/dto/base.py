@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 
 def serialize_time(value: datetime) -> str:
-    return value.strftime('%d.%m.%Y %H:%M')
+    return value.strftime("%d.%m.%Y %H:%M")
 
 
 class Base(BaseModel):
@@ -13,9 +13,6 @@ class Base(BaseModel):
     updated_at: datetime = Field(alias="updatedAt")
 
     class Config:
-        json_encoders = {
-            datetime: serialize_time
-        }
+        json_encoders = {datetime: serialize_time}
         orm_mode = True
         allow_population_by_field_name = True
-

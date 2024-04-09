@@ -28,9 +28,9 @@ class AuthProvider:
         self.access_token_expire = timedelta(days=3)
 
     def verify_password(
-            self,
-            plain_password: str,
-            hashed_password: str,
+        self,
+        plain_password: str,
+        hashed_password: str,
     ) -> bool:
         return self.pwd_context.verify(
             plain_password,
@@ -41,10 +41,7 @@ class AuthProvider:
         return self.pwd_context.hash(password)
 
     async def authenticate_user(
-            self,
-            email: str,
-            password: str,
-            dao: HolderDao
+        self, email: str, password: str, dao: HolderDao
     ) -> dto.User:
         http_status_401 = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -55,19 +52,19 @@ class AuthProvider:
         if user is None:
             raise http_status_401
         if not self.verify_password(
-                password,
-                user.password,
+            password,
+            user.password,
         ):
             raise http_status_401
         return user
 
     def create_access_token(
-            self,
-            data: dict,
-            expires_delta: timedelta,
+        self,
+        data: dict,
+        expires_delta: timedelta,
     ) -> dto.Token:
         to_encode = data.copy()
-        expire = datetime.now(tz=pytz.timezone('Asia/Tashkent')) + expires_delta
+        expire = datetime.now(tz=pytz.timezone("Asia/Tashkent")) + expires_delta
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(
             to_encode,
@@ -79,21 +76,16 @@ class AuthProvider:
             type="bearer",
         )
 
-    def create_user_token(
-            self,
-            user: dto.User
-    ) -> dto.Token:
+    def create_user_token(self, user: dto.User) -> dto.Token:
         return self.create_access_token(
-            data={
-                "sub": user.email
-            },
+            data={"sub": user.email},
             expires_delta=self.access_token_expire,
         )
 
     async def get_current_user(
-            self,
-            token: str = Depends(oauth2_scheme),
-            dao: HolderDao = Depends(dao_provider),
+        self,
+        token: str = Depends(oauth2_scheme),
+        dao: HolderDao = Depends(dao_provider),
     ) -> dto.User:
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

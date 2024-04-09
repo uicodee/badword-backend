@@ -1,9 +1,4 @@
-from typing import (
-    List,
-    TypeVar,
-    Type,
-    Generic
-)
+from typing import List, TypeVar, Type, Generic
 
 from sqlalchemy import delete, func
 from sqlalchemy.ext.asyncio import AsyncSession
