@@ -1,4 +1,5 @@
 from pydantic import BaseSettings
+import platform
 
 
 class DB(BaseSettings):
@@ -25,7 +26,10 @@ class SettingsExtractor(BaseSettings):
     API__SECRET: str
 
     class Config:
-        env_file = ".env"
+        if platform.system() == 'Darwin':
+            env_file = ".env"
+        elif platform.system() == 'Linux':
+            env_file = ".env.dev"
         env_file_encoding = "utf-8"
 
 
