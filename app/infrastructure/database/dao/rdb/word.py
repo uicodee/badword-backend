@@ -39,7 +39,8 @@ class WordDAO(BaseDAO[Word]):
             select(Word).where(Word.word == word).order_by(Word.created_at.desc())
         )
         word = result.scalar()
-        return dto.Word.from_orm(word)
+        if word is not None:
+            return dto.Word.from_orm(word)
 
     async def get_all_words(self, is_checked: bool) -> list[dto.Word]:
         result = await self.session.execute(
