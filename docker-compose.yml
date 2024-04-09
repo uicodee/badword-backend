@@ -6,4 +6,4 @@ services:
     restart: always
     container_name: "badword-api"
     ports:
-      - "5000:15400"
+      - "8000:15400"
