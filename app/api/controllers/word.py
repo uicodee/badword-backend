@@ -56,7 +56,6 @@ async def get_word(
     description="Add word",
     summary="Add new word",
     response_model=dto.Word,
-    dependencies=[Depends(get_user)],
 )
 async def add_word(
     word: schems.Word, dao: HolderDao = Depends(dao_provider)
