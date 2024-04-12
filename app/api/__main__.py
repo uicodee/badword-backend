@@ -29,4 +29,4 @@ def main() -> FastAPI:
 
 
 if __name__ == "__main__":
-    uvicorn.run("app.api.__main__:main", host="127.0.0.1", port=15400, reload=True)
+    uvicorn.run("app.api.__main__:main", host="0.0.0.0", port=15400, reload=True)
