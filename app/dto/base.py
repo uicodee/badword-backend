@@ -14,5 +14,5 @@ class Base(BaseModel):
 
     class Config:
         json_encoders = {datetime: serialize_time}
-        orm_mode = True
-        allow_population_by_field_name = True
+        from_attributes = True
+        populate_by_name = True

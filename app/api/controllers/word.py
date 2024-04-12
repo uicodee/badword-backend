@@ -17,7 +17,7 @@ router = APIRouter(prefix="/word")
     response_model=list[dto.Word],
 )
 async def get_all_words(dao: HolderDao = Depends(dao_provider)) -> list[dto.Word]:
-    return await dao.word.get_all_words(is_checked=True)
+    return await dao.word.get_all_checked_words(is_checked=True)
 
 
 @router.get(
@@ -47,7 +47,12 @@ async def get_words(
 async def get_word(
     word: str = Path(), dao: HolderDao = Depends(dao_provider)
 ) -> dto.Word:
-    return await dao.word.get_word(word=word)
+    word = await dao.word.get_word(word=word)
+    if word is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Word does not exist"
+        )
+    return word
 
 
 @router.post(

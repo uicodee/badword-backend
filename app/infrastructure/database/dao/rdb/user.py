@@ -21,7 +21,7 @@ class UserDAO(BaseDAO[User]):
             .returning(User)
         )
         await self.session.commit()
-        return dto.User.from_orm(result.scalar())
+        return dto.User.model_validate(result.scalar())
 
     async def get_user(
         self, email: str, with_password: bool = False
@@ -30,6 +30,6 @@ class UserDAO(BaseDAO[User]):
         user = result.scalar()
         if user is not None:
             if with_password:
-                return dto.UserWithPassword.from_orm(user)
+                return dto.UserWithPassword.model_validate(user)
             else:
-                return dto.User.from_orm(user)
+                return dto.User.model_validate(user)

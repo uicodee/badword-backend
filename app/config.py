@@ -1,5 +1,6 @@
-from pydantic import BaseSettings
 import platform
+
+from pydantic.v1 import BaseSettings
 
 
 class DB(BaseSettings):
@@ -16,6 +17,11 @@ class Api(BaseSettings):
     secret: str
 
 
+class TgBot(BaseSettings):
+
+    token: str
+
+
 class SettingsExtractor(BaseSettings):
     DB__HOST: str
     DB__PORT: int
@@ -24,6 +30,8 @@ class SettingsExtractor(BaseSettings):
     DB__PASSWORD: str
 
     API__SECRET: str
+
+    BOT__TOKEN: str
 
     class Config:
         if platform.system() == 'Darwin':
@@ -36,6 +44,7 @@ class SettingsExtractor(BaseSettings):
 class Settings(BaseSettings):
     db: DB
     api: Api
+    tgbot: TgBot
 
 
 def load_config() -> Settings:
@@ -50,4 +59,5 @@ def load_config() -> Settings:
             password=settings.DB__PASSWORD,
         ),
         api=Api(secret=settings.API__SECRET),
+        tgbot=TgBot(token=settings.BOT__TOKEN),
     )
