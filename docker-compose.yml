@@ -7,3 +7,9 @@ services:
     container_name: "badword-api"
     ports:
       - "8000:15400"
+  tgbot:
+    build: .
+    command: poetry run python -m app.tgbot
+    restart: always
+    container_name: "badword-bot"
+
